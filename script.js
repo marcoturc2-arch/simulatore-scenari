@@ -30,7 +30,7 @@ const inputIds = [
 
 function valore(id) {
   const elemento = document.getElementById(id);
-  return Number(elemento.value) || 0;
+  return elemento ? Number(elemento.value) || 0 : 0;
 }
 
 function percentuale(id) {
@@ -38,12 +38,15 @@ function percentuale(id) {
 }
 
 function scrivi(id, valore) {
-  document.getElementById(id).textContent = valore;
+  const elemento = document.getElementById(id);
+  if (elemento) {
+    elemento.textContent = valore;
+  }
 }
 
 let scenarioChart;
 
-function calcolaFunnelCorretto() {
+function calcolaFunnel() {
   const budgetAdv = valore("budgetAdv");
   const cpl = valore("cpl");
   const showupWebinar = percentuale("showupWebinar");
@@ -113,7 +116,11 @@ function aggiornaGrafico(scenari) {
   const datiUtile = scenari.map(s => Math.round(s.utile));
 
   if (!scenarioChart) {
-    const ctx = document.getElementById("scenarioChart").getContext("2d");
+    const canvas = document.getElementById("scenarioChart");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
     scenarioChart = new Chart(ctx, {
       type: "bar",
       data: {
@@ -179,26 +186,77 @@ function aggiornaGrafico(scenari) {
   }
 }
 
-function stampaPdf() {
-  calcolaFunnelCorretto();
+function esportaPdf() {
+  calcolaFunnel();
+
+  const bottone = document.getElementById("exportPdfBtn");
+  const area = document.getElementById("pdfArea");
+
+  if (!area || typeof html2pdf === "undefined") {
+    window.print();
+    return;
+  }
 
   if (scenarioChart) {
     scenarioChart.resize();
     scenarioChart.update();
   }
 
+  bottone.disabled = true;
+  bottone.textContent = "Genero PDF...";
+
+  const opzioni = {
+    margin: [8, 8, 8, 8],
+    filename: "simulatore-scenari.pdf",
+    image: {
+      type: "jpeg",
+      quality: 0.98
+    },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#0f172a",
+      scrollY: 0
+    },
+    jsPDF: {
+      unit: "mm",
+      format: "a4",
+      orientation: "landscape"
+    },
+    pagebreak: {
+      mode: ["avoid-all", "css", "legacy"]
+    }
+  };
+
   setTimeout(() => {
-    window.print();
-  }, 250);
+    html2pdf()
+      .set(opzioni)
+      .from(area)
+      .save()
+      .then(() => {
+        bottone.disabled = false;
+        bottone.textContent = "Esporta PDF";
+      })
+      .catch(() => {
+        bottone.disabled = false;
+        bottone.textContent = "Esporta PDF";
+        window.print();
+      });
+  }, 350);
 }
 
-inputIds.forEach(id => {
-  const elemento = document.getElementById(id);
-  if (elemento) {
-    elemento.addEventListener("input", calcolaFunnelCorretto);
+document.addEventListener("DOMContentLoaded", function () {
+  inputIds.forEach(id => {
+    const elemento = document.getElementById(id);
+    if (elemento) {
+      elemento.addEventListener("input", calcolaFunnel);
+    }
+  });
+
+  const bottonePdf = document.getElementById("exportPdfBtn");
+  if (bottonePdf) {
+    bottonePdf.addEventListener("click", esportaPdf);
   }
+
+  calcolaFunnel();
 });
-
-document.getElementById("printPdfBtn").addEventListener("click", stampaPdf);
-
-calcolaFunnelCorretto();

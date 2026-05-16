@@ -1,13 +1,10 @@
 :root {
   --bg: #0f172a;
   --panel: #111827;
-  --panel-light: #1f2937;
   --text: #f8fafc;
   --muted: #cbd5e1;
   --line: #334155;
   --accent: #38bdf8;
-  --accent-2: #22c55e;
-  --danger: #f97316;
   --shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
 }
 
@@ -22,24 +19,11 @@ body {
   color: var(--text);
 }
 
-.container {
-  width: min(1180px, calc(100% - 32px));
-  margin: 0 auto;
-}
-
-.hero {
-  padding: 56px 0 36px;
-  border-bottom: 1px solid var(--line);
-}
-
-.hero-inner {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.print-button {
+.export-pdf-button {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 9999;
   border: 0;
   border-radius: 14px;
   background: var(--accent);
@@ -49,11 +33,25 @@ body {
   padding: 14px 18px;
   cursor: pointer;
   box-shadow: var(--shadow);
-  white-space: nowrap;
 }
 
-.print-button:hover {
+.export-pdf-button:hover {
   filter: brightness(1.08);
+}
+
+.export-pdf-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.container {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 56px 0 36px;
+  border-bottom: 1px solid var(--line);
 }
 
 .eyebrow {
@@ -221,10 +219,6 @@ input:focus {
 }
 
 @media (max-width: 980px) {
-  .hero-inner {
-    flex-direction: column;
-  }
-
   .input-grid,
   .kpi-grid,
   .scenario-grid {
@@ -247,105 +241,16 @@ input:focus {
   .section-title {
     flex-direction: column;
   }
+
+  .export-pdf-button {
+    top: 12px;
+    right: 12px;
+    padding: 12px 14px;
+  }
 }
 
 @media print {
-  @page {
-    size: A4;
-    margin: 12mm;
-  }
-
-  body {
-    background: #ffffff;
-    color: #111827;
-  }
-
-  .container {
-    width: 100%;
-  }
-
-  .hero {
-    padding: 0 0 16px;
-    border-bottom: 1px solid #cccccc;
-  }
-
-  .hero-inner {
-    display: block;
-  }
-
-  .print-button {
+  .export-pdf-button {
     display: none;
-  }
-
-  .eyebrow {
-    color: #111827;
-  }
-
-  h1 {
-    font-size: 34px;
-  }
-
-  .subtitle,
-  .section-title p,
-  label,
-  .kpi p,
-  .scenario-result p,
-  .footer {
-    color: #374151;
-  }
-
-  main {
-    padding: 16px 0 0;
-  }
-
-  .panel {
-    background: #ffffff;
-    color: #111827;
-    border: 1px solid #d1d5db;
-    box-shadow: none;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 14px;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .section-title span {
-    background: #111827;
-    color: #ffffff;
-  }
-
-  .input-grid,
-  .kpi-grid,
-  .scenario-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  input {
-    background: #ffffff;
-    color: #111827;
-    border: 1px solid #9ca3af;
-    padding: 8px 10px;
-  }
-
-  .kpi,
-  .scenario-card,
-  .chart-wrap {
-    background: #ffffff;
-    color: #111827;
-    border: 1px solid #d1d5db;
-    box-shadow: none;
-  }
-
-  .kpi strong,
-  .scenario-result strong {
-    color: #111827;
-  }
-
-  .chart-wrap {
-    min-height: 300px;
-    break-inside: avoid;
-    page-break-inside: avoid;
   }
 }
