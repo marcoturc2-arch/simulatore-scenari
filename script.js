@@ -8,6 +8,11 @@ const numero = new Intl.NumberFormat("it-IT", {
   maximumFractionDigits: 0
 });
 
+const percentualeFormato = new Intl.NumberFormat("it-IT", {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1
+});
+
 const inputIds = [
   "budgetAdv",
   "cpl",
@@ -96,9 +101,11 @@ function calcolaScenario(nome) {
   const fatturato = budget * roas;
   const costoServizio = fatturato * costoServizioPerc;
   const utile = fatturato - costoServizio - budget - costiFissi;
+  const utileSuFatturato = fatturato > 0 ? (utile / fatturato) * 100 : 0;
 
   scrivi(`fatturato${nome}`, euro.format(fatturato));
   scrivi(`utile${nome}`, euro.format(utile));
+  scrivi(`utilePerc${nome}`, `(${percentualeFormato.format(utileSuFatturato)}%)`);
 
   return { fatturato, utile };
 }
