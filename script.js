@@ -43,7 +43,7 @@ function scrivi(id, valore) {
 
 let scenarioChart;
 
-function calcolaFunnel() {
+function calcolaFunnelCorretto() {
   const budgetAdv = valore("budgetAdv");
   const cpl = valore("cpl");
   const showupWebinar = percentuale("showupWebinar");
@@ -134,6 +134,7 @@ function aggiornaGrafico(scenari) {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: false,
         plugins: {
           legend: {
             labels: {
@@ -178,11 +179,26 @@ function aggiornaGrafico(scenari) {
   }
 }
 
+function stampaPdf() {
+  calcolaFunnelCorretto();
+
+  if (scenarioChart) {
+    scenarioChart.resize();
+    scenarioChart.update();
+  }
+
+  setTimeout(() => {
+    window.print();
+  }, 250);
+}
+
 inputIds.forEach(id => {
   const elemento = document.getElementById(id);
   if (elemento) {
-    elemento.addEventListener("input", calcolaFunnel);
+    elemento.addEventListener("input", calcolaFunnelCorretto);
   }
 });
 
-calcolaFunnel();
+document.getElementById("printPdfBtn").addEventListener("click", stampaPdf);
+
+calcolaFunnelCorretto();
