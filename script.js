@@ -122,11 +122,6 @@ function aggiornaGrafico(scenari) {
   const datiFatturato = scenari.map(s => Math.round(s.fatturato));
   const datiUtile = scenari.map(s => Math.round(s.utile));
 
-  const chartColors = {
-    text: "#cbd5e1",
-    grid: "rgba(148, 163, 184, 0.15)"
-  };
-
   if (!scenarioChart) {
     const canvas = document.getElementById("scenarioChart");
     if (!canvas) return;
@@ -157,7 +152,7 @@ function aggiornaGrafico(scenari) {
         plugins: {
           legend: {
             labels: {
-              color: chartColors.text
+              color: "#f8fafc"
             }
           },
           tooltip: {
@@ -171,21 +166,21 @@ function aggiornaGrafico(scenari) {
         scales: {
           x: {
             ticks: {
-              color: chartColors.text
+              color: "#cbd5e1"
             },
             grid: {
-              color: chartColors.grid
+              color: "rgba(148, 163, 184, 0.15)"
             }
           },
           y: {
             ticks: {
-              color: chartColors.text,
+              color: "#cbd5e1",
               callback: function(value) {
                 return euro.format(value);
               }
             },
             grid: {
-              color: chartColors.grid
+              color: "rgba(148, 163, 184, 0.15)"
             }
           }
         }
@@ -198,20 +193,6 @@ function aggiornaGrafico(scenari) {
   }
 }
 
-function stampaPdf() {
-  calcolaFunnel();
-
-  if (scenarioChart) {
-    scenarioChart.resize();
-    scenarioChart.update();
-  }
-
-  setTimeout(function () {
-    window.focus();
-    window.print();
-  }, 300);
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   inputIds.forEach(id => {
     const elemento = document.getElementById(id);
@@ -219,11 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
       elemento.addEventListener("input", calcolaFunnel);
     }
   });
-
-  const bottonePdf = document.getElementById("printPdfBtn");
-  if (bottonePdf) {
-    bottonePdf.addEventListener("click", stampaPdf);
-  }
 
   calcolaFunnel();
 });
