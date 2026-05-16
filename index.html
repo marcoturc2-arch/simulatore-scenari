@@ -6,14 +6,13 @@
   <title>Simulatore Scenari Marketing Funnel</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <button id="exportPdfBtn" class="export-pdf-button" type="button">
-    Esporta PDF
+  <button id="printPdfBtn" class="print-pdf-button" type="button">
+    Stampa / Salva PDF
   </button>
 
-  <div id="pdfArea">
+  <div id="printArea">
     <header class="hero">
       <div class="container">
         <p class="eyebrow">Marketing Funnel Dashboard</p>
@@ -36,60 +35,17 @@
         </div>
 
         <div class="grid input-grid">
-          <label>
-            Budget advertising (€)
-            <input id="budgetAdv" type="number" value="5000" min="0" step="100" />
-          </label>
-
-          <label>
-            CPL - Costo per lead (€)
-            <input id="cpl" type="number" value="10" min="0.01" step="0.1" />
-          </label>
-
-          <label>
-            Show-up webinar (%)
-            <input id="showupWebinar" type="number" value="40" min="0" max="100" step="1" />
-          </label>
-
-          <label>
-            Conversione appuntamenti (%)
-            <input id="conversioneApp" type="number" value="20" min="0" max="100" step="1" />
-          </label>
-
-          <label>
-            Show-up appuntamenti (%)
-            <input id="showupApp" type="number" value="70" min="0" max="100" step="1" />
-          </label>
-
-          <label>
-            Chiusura sales (%)
-            <input id="chiusuraSales" type="number" value="35" min="0" max="100" step="1" />
-          </label>
-
-          <label>
-            Scontrino medio (€)
-            <input id="scontrinoMedio" type="number" value="1500" min="0" step="50" />
-          </label>
-
-          <label>
-            Costo servizio (% sul fatturato)
-            <input id="costoServizioPerc" type="number" value="30" min="0" max="100" step="1" />
-          </label>
-
-          <label>
-            Costi fissi (€)
-            <input id="costiFissi" type="number" value="2000" min="0" step="100" />
-          </label>
-
-          <label>
-            Durata appuntamento sales (min)
-            <input id="durataApp" type="number" value="45" min="1" step="5" />
-          </label>
-
-          <label>
-            Ore disponibili per commerciale
-            <input id="oreCommerciale" type="number" value="120" min="1" step="1" />
-          </label>
+          <label>Budget advertising (€)<input id="budgetAdv" type="number" value="5000" min="0" step="100" /></label>
+          <label>CPL - Costo per lead (€)<input id="cpl" type="number" value="10" min="0.01" step="0.1" /></label>
+          <label>Show-up webinar (%)<input id="showupWebinar" type="number" value="40" min="0" max="100" step="1" /></label>
+          <label>Conversione appuntamenti (%)<input id="conversioneApp" type="number" value="20" min="0" max="100" step="1" /></label>
+          <label>Show-up appuntamenti (%)<input id="showupApp" type="number" value="70" min="0" max="100" step="1" /></label>
+          <label>Chiusura sales (%)<input id="chiusuraSales" type="number" value="35" min="0" max="100" step="1" /></label>
+          <label>Scontrino medio (€)<input id="scontrinoMedio" type="number" value="1500" min="0" step="50" /></label>
+          <label>Costo servizio (% sul fatturato)<input id="costoServizioPerc" type="number" value="30" min="0" max="100" step="1" /></label>
+          <label>Costi fissi (€)<input id="costiFissi" type="number" value="2000" min="0" step="100" /></label>
+          <label>Durata appuntamento sales (min)<input id="durataApp" type="number" value="45" min="1" step="5" /></label>
+          <label>Ore disponibili per commerciale<input id="oreCommerciale" type="number" value="120" min="1" step="1" /></label>
         </div>
       </section>
 
@@ -135,7 +91,7 @@
             <label>ROAS<input id="roasPrudente" type="number" value="2" min="0" step="0.1" /></label>
             <div class="scenario-result">
               <p>Fatturato: <strong id="fatturatoPrudente">€ 0</strong></p>
-              <p>Utile: <strong id="utilePrudente">€ 0</strong></p>
+              <p>Utile: <strong id="utilePrudente">€ 0</strong> <span id="utilePercPrudente" class="utile-percentuale">(0,0%)</span></p>
             </div>
           </article>
 
@@ -145,7 +101,7 @@
             <label>ROAS<input id="roasBase" type="number" value="3" min="0" step="0.1" /></label>
             <div class="scenario-result">
               <p>Fatturato: <strong id="fatturatoBase">€ 0</strong></p>
-              <p>Utile: <strong id="utileBase">€ 0</strong></p>
+              <p>Utile: <strong id="utileBase">€ 0</strong> <span id="utilePercBase" class="utile-percentuale">(0,0%)</span></p>
             </div>
           </article>
 
@@ -155,7 +111,7 @@
             <label>ROAS<input id="roasOttimale" type="number" value="4" min="0" step="0.1" /></label>
             <div class="scenario-result">
               <p>Fatturato: <strong id="fatturatoOttimale">€ 0</strong></p>
-              <p>Utile: <strong id="utileOttimale">€ 0</strong></p>
+              <p>Utile: <strong id="utileOttimale">€ 0</strong> <span id="utilePercOttimale" class="utile-percentuale">(0,0%)</span></p>
             </div>
           </article>
         </div>

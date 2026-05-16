@@ -8,6 +8,11 @@ const numero = new Intl.NumberFormat("it-IT", {
   maximumFractionDigits: 0
 });
 
+const percentualeFormato = new Intl.NumberFormat("it-IT", {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1
+});
+
 const inputIds = [
   "budgetAdv",
   "cpl",
@@ -96,9 +101,11 @@ function calcolaScenario(nome) {
   const fatturato = budget * roas;
   const costoServizio = fatturato * costoServizioPerc;
   const utile = fatturato - costoServizio - budget - costiFissi;
+  const utileSuFatturato = fatturato > 0 ? (utile / fatturato) * 100 : 0;
 
   scrivi(`fatturato${nome}`, euro.format(fatturato));
   scrivi(`utile${nome}`, euro.format(utile));
+  scrivi(`utilePerc${nome}`, `(${percentualeFormato.format(utileSuFatturato)}%)`);
 
   return { fatturato, utile };
 }
@@ -114,6 +121,11 @@ function calcolaScenari() {
 function aggiornaGrafico(scenari) {
   const datiFatturato = scenari.map(s => Math.round(s.fatturato));
   const datiUtile = scenari.map(s => Math.round(s.utile));
+
+  const chartColors = {
+    text: "#cbd5e1",
+    grid: "rgba(148, 163, 184, 0.15)"
+  };
 
   if (!scenarioChart) {
     const canvas = document.getElementById("scenarioChart");
@@ -145,7 +157,7 @@ function aggiornaGrafico(scenari) {
         plugins: {
           legend: {
             labels: {
-              color: "#f8fafc"
+              color: chartColors.text
             }
           },
           tooltip: {
@@ -159,21 +171,21 @@ function aggiornaGrafico(scenari) {
         scales: {
           x: {
             ticks: {
-              color: "#cbd5e1"
+              color: chartColors.text
             },
             grid: {
-              color: "rgba(148, 163, 184, 0.15)"
+              color: chartColors.grid
             }
           },
           y: {
             ticks: {
-              color: "#cbd5e1",
+              color: chartColors.text,
               callback: function(value) {
                 return euro.format(value);
               }
             },
             grid: {
-              color: "rgba(148, 163, 184, 0.15)"
+              color: chartColors.grid
             }
           }
         }
@@ -186,63 +198,18 @@ function aggiornaGrafico(scenari) {
   }
 }
 
-function esportaPdf() {
+function stampaPdf() {
   calcolaFunnel();
-
-  const bottone = document.getElementById("exportPdfBtn");
-  const area = document.getElementById("pdfArea");
-
-  if (!area || typeof html2pdf === "undefined") {
-    window.print();
-    return;
-  }
 
   if (scenarioChart) {
     scenarioChart.resize();
     scenarioChart.update();
   }
 
-  bottone.disabled = true;
-  bottone.textContent = "Genero PDF...";
-
-  const opzioni = {
-    margin: [8, 8, 8, 8],
-    filename: "simulatore-scenari.pdf",
-    image: {
-      type: "jpeg",
-      quality: 0.98
-    },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#0f172a",
-      scrollY: 0
-    },
-    jsPDF: {
-      unit: "mm",
-      format: "a4",
-      orientation: "landscape"
-    },
-    pagebreak: {
-      mode: ["avoid-all", "css", "legacy"]
-    }
-  };
-
-  setTimeout(() => {
-    html2pdf()
-      .set(opzioni)
-      .from(area)
-      .save()
-      .then(() => {
-        bottone.disabled = false;
-        bottone.textContent = "Esporta PDF";
-      })
-      .catch(() => {
-        bottone.disabled = false;
-        bottone.textContent = "Esporta PDF";
-        window.print();
-      });
-  }, 350);
+  setTimeout(function () {
+    window.focus();
+    window.print();
+  }, 300);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -253,9 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  const bottonePdf = document.getElementById("exportPdfBtn");
+  const bottonePdf = document.getElementById("printPdfBtn");
   if (bottonePdf) {
-    bottonePdf.addEventListener("click", esportaPdf);
+    bottonePdf.addEventListener("click", stampaPdf);
   }
 
   calcolaFunnel();
