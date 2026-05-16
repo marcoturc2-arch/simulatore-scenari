@@ -202,12 +202,6 @@ input:focus {
   color: var(--text);
 }
 
-.utile-percentuale {
-  color: var(--accent);
-  font-weight: 800;
-  margin-left: 4px;
-}
-
 .chart-wrap {
   margin-top: 26px;
   background: #020617;
