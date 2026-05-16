@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulatore Scenari Marketing Funnel</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <p class="eyebrow">Marketing Funnel Dashboard</p>
+      <h1>Simulatore Scenari</h1>
+      <p class="subtitle">
+        Inserisci i dati del funnel per stimare lead, appuntamenti, clienti, fatturato,
+        utile netto, ROAS, CAC e sostenibilità commerciale.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="section-title">
+        <span>1</span>
+        <div>
+          <h2>Parametri principali</h2>
+          <p>Imposta investimento, performance del funnel e struttura dei costi.</p>
+        </div>
+      </div>
+
+      <div class="grid input-grid">
+        <label>
+          Budget advertising (€)
+          <input id="budgetAdv" type="number" value="5000" min="0" step="100" />
+        </label>
+
+        <label>
+          CPL - Costo per lead (€)
+          <input id="cpl" type="number" value="10" min="0.01" step="0.1" />
+        </label>
+
+        <label>
+          Show-up webinar (%)
+          <input id="showupWebinar" type="number" value="40" min="0" max="100" step="1" />
+        </label>
+
+        <label>
+          Conversione appuntamenti (%)
+          <input id="conversioneApp" type="number" value="20" min="0" max="100" step="1" />
+        </label>
+
+        <label>
+          Show-up appuntamenti (%)
+          <input id="showupApp" type="number" value="70" min="0" max="100" step="1" />
+        </label>
+
+        <label>
+          Chiusura sales (%)
+          <input id="chiusuraSales" type="number" value="35" min="0" max="100" step="1" />
+        </label>
+
+        <label>
+          Scontrino medio (€)
+          <input id="scontrinoMedio" type="number" value="1500" min="0" step="50" />
+        </label>
+
+        <label>
+          Costo servizio (% sul fatturato)
+          <input id="costoServizioPerc" type="number" value="30" min="0" max="100" step="1" />
+        </label>
+
+        <label>
+          Costi fissi (€)
+          <input id="costiFissi" type="number" value="2000" min="0" step="100" />
+        </label>
+
+        <label>
+          Durata appuntamento sales (min)
+          <input id="durataApp" type="number" value="45" min="1" step="5" />
+        </label>
+
+        <label>
+          Ore disponibili per commerciale
+          <input id="oreCommerciale" type="number" value="120" min="1" step="1" />
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <span>2</span>
+        <div>
+          <h2>Risultati del funnel</h2>
+          <p>Le metriche si aggiornano automaticamente a ogni modifica.</p>
+        </div>
+      </div>
+
+      <div class="grid kpi-grid">
+        <article class="kpi">
+          <p>Lead generati</p>
+          <strong id="leadGenerati">0</strong>
+        </article>
+        <article class="kpi">
+          <p>Presenti al webinar</p>
+          <strong id="presentiWebinar">0</strong>
+        </article>
+        <article class="kpi">
+          <p>Appuntamenti prenotati</p>
+          <strong id="appPrenotati">0</strong>
+        </article>
+        <article class="kpi">
+          <p>Appuntamenti svolti</p>
+          <strong id="appSvolti">0</strong>
+        </article>
+        <article class="kpi">
+          <p>Clienti acquisiti</p>
+          <strong id="clienti">0</strong>
+        </article>
+        <article class="kpi">
+          <p>Fatturato</p>
+          <strong id="fatturato">€ 0</strong>
+        </article>
+        <article class="kpi">
+          <p>Utile netto stimato</p>
+          <strong id="utile">€ 0</strong>
+        </article>
+        <article class="kpi">
+          <p>ROAS</p>
+          <strong id="roas">0.00</strong>
+        </article>
+        <article class="kpi">
+          <p>CAC</p>
+          <strong id="cac">€ 0</strong>
+        </article>
+        <article class="kpi">
+          <p>Commerciali necessari</p>
+          <strong id="commerciali">0</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <span>3</span>
+        <div>
+          <h2>Confronto tra tre scenari</h2>
+          <p>
+            Inserisci budget ADV e ROAS per scenario. Il sistema calcola fatturato e utile
+            usando la stessa percentuale di costo servizio e gli stessi costi fissi del simulatore principale.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid scenario-grid">
+        <article class="scenario-card">
+          <h3>Scenario Prudente</h3>
+          <label>
+            Budget ADV (€)
+            <input id="budgetPrudente" type="number" value="3000" min="0" step="100" />
+          </label>
+          <label>
+            ROAS
+            <input id="roasPrudente" type="number" value="2" min="0" step="0.1" />
+          </label>
+          <div class="scenario-result">
+            <p>Fatturato: <strong id="fatturatoPrudente">€ 0</strong></p>
+            <p>Utile: <strong id="utilePrudente">€ 0</strong></p>
+          </div>
+        </article>
+
+        <article class="scenario-card">
+          <h3>Scenario Base</h3>
+          <label>
+            Budget ADV (€)
+            <input id="budgetBase" type="number" value="5000" min="0" step="100" />
+          </label>
+          <label>
+            ROAS
+            <input id="roasBase" type="number" value="3" min="0" step="0.1" />
+          </label>
+          <div class="scenario-result">
+            <p>Fatturato: <strong id="fatturatoBase">€ 0</strong></p>
+            <p>Utile: <strong id="utileBase">€ 0</strong></p>
+          </div>
+        </article>
+
+        <article class="scenario-card">
+          <h3>Scenario Ottimale</h3>
+          <label>
+            Budget ADV (€)
+            <input id="budgetOttimale" type="number" value="8000" min="0" step="100" />
+          </label>
+          <label>
+            ROAS
+            <input id="roasOttimale" type="number" value="4" min="0" step="0.1" />
+          </label>
+          <div class="scenario-result">
+            <p>Fatturato: <strong id="fatturatoOttimale">€ 0</strong></p>
+            <p>Utile: <strong id="utileOttimale">€ 0</strong></p>
+          </div>
+        </article>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="scenarioChart"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Marco Turconi - Simulatore Scenari</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
